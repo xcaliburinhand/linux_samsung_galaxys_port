@@ -1207,7 +1207,13 @@ static struct gpio_event_direct_entry herring_keypad_key_map[] = {
 	{
 		.gpio	= S5PV210_GPH3(2),
 		.code	= KEY_VOLUMEUP,
-	}
+	},
+#ifdef CONFIG_GALAXYS_GT_I9000
+	{
+		.gpio	= S5PV210_GPH3(5),
+		.code	= KEY_HOME,
+	},
+#endif
 };
 
 static struct gpio_event_input_info herring_keypad_key_info = {
@@ -2998,11 +3004,19 @@ static struct gpio_init_data herring_init_gpios[] = {
 		.pud	= S3C_GPIO_PULL_DOWN,
 		.drv	= S3C_GPIO_DRVSTR_1X,
 	}, {
+#ifdef CONFIG_GALAXYS_GT_I9000 /* HOME Key */
+		.num	= S5PV210_GPH3(5),
+		.cfg	= S3C_GPIO_SFN(0xF),
+		.val	= S3C_GPIO_SETPIN_NONE,
+		.pud	= S3C_GPIO_PULL_NONE,
+		.drv	= S3C_GPIO_DRVSTR_1X,
+#else
 		.num	= S5PV210_GPH3(5),
 		.cfg	= S3C_GPIO_INPUT,
 		.val	= S3C_GPIO_SETPIN_NONE,
 		.pud	= S3C_GPIO_PULL_DOWN,
 		.drv	= S3C_GPIO_DRVSTR_1X,
+#endif
 	}, { /* GPIO_EAR_SEND_END */
 		.num	= S5PV210_GPH3(6),
 		.cfg	= S3C_GPIO_SFN(GPIO_EAR_SEND_END_AF),
