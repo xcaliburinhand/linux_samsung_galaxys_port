@@ -346,6 +346,14 @@ config SENSORS_AK8975
 	  If you say yes here you get support for Asahi Kasei's
 	  orientation sensor AK8975.
 
+config SENSORS_YAMAHA
+        depends on I2C
+        tristate "YAMAHA"
+        default y
+        help
+          This option enables magnetic sensors using YAMAHA driver.
+          It is optimized for s3c6410.
+
 config SENSORS_KR3DM
 	tristate "KR3DM acceleration sensor support"
 	depends on I2C
