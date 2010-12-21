@@ -1207,6 +1207,12 @@ static struct gpio_event_direct_entry herring_keypad_key_map[] = {
 		.gpio	= S5PV210_GPH2(6),
 		.code	= KEY_POWER,
 	},
+#ifdef CONFIG_GALAXYS_GT_I9000
+	{
+		.gpio	= S5PV210_GPH3(5),
+		.code	= KEY_HOME,
+	},
+#endif
 #ifdef CONFIG_GALAXYS_SGH_T959
 	{
 		.gpio 	= S5PV210_GPH3(2),
@@ -1224,12 +1230,6 @@ static struct gpio_event_direct_entry herring_keypad_key_map[] = {
 	{
 		.gpio	= S5PV210_GPH3(2),
 		.code	= KEY_VOLUMEUP,
-	},
-#endif
-#ifdef CONFIG_GALAXYS_GT_I9000
-	{
-		.gpio	= S5PV210_GPH3(5),
-		.code	= KEY_HOME,
 	},
 #endif
 };
