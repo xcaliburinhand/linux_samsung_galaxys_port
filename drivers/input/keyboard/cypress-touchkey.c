@@ -305,11 +305,12 @@ static int cypress_touchkey_probe(struct i2c_client *client,
 		devdata->backlight_off = OLD_BACKLIGHT_OFF;
 	}
 
+#ifdef CONFIG_GALAXYS
+    	devdata->has_legacy_keycode = true;
+#else
 	devdata->has_legacy_keycode = data[1] >= 0xc4 || data[1] < 0x9 ||
-					(data[1] == 0x9 && data[2] < 0x9) ||
-					#if defined(CONFIG_GALAXYS_SGHT959)
-					data[1] == 0xe;
-					#endif
+        (data[1] == 0x9 && data[2] < 0x9);
+#endif
 
 	err = i2c_touchkey_write_byte(devdata, devdata->backlight_on);
 	if (err) {
