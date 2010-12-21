@@ -9,6 +9,9 @@
 #
 #
 
+# replaces the actual version forged from the latest commit hash by g119403d
+# correspond to the version used in the .ko modules distributed on current
+# devices Google sell
 echo -g119403d
 exit
 
