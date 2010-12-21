@@ -148,31 +148,31 @@ choice
         prompt "Select GalaxyS Type"
 
 config GALAXYS_GT_I9000
-        bool "select SGHI9000"
+        bool "select GT-I9000"
         depends on GALAXYS
         help
           Select Samsung I9000
 
 config GALAXYS_SGH_I897
-        bool "select SGHI897"
+        bool "select SGH-I897"
         depends on GALAXYS
         help
 	  Select Samsung Captivate
 
 config GALAXYS_SGH_T959
-        bool "select SGHT959"
+        bool "select SGH-T959"
         depends on GALAXYS
         help
-          Select Samsung Vibrant
+          Select Samsung T-Mobile Vibrant
 
 config GALAXYS_SCH_I500
-        bool "select SCHI500"
+        bool "select SCH-I500"
         depends on GALAXYS
         help
           Select Samsung Fascinate
 
 config GALAXYS_SPH_D700
-        bool "select SPHD700"
+        bool "select SPH-D700"
         depends on GALAXYS
         help
           Select Samsung Epic
