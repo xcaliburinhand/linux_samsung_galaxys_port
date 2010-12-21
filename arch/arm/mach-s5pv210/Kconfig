@@ -137,6 +137,48 @@ config MACH_HERRING
 	help
 	  Machine support for Herring
 
+config GALAXYS
+	bool "GalaxyS"
+	depends on MACH_HERRING
+	help
+	  Port to GalaxyS phone
+
+if GALAXYS
+choice
+        prompt "Select GalaxyS Type"
+
+config GALAXYS_GT_I9000
+        bool "select SGHI9000"
+        depends on GALAXYS
+        help
+          Select Samsung I9000
+
+config GALAXYS_SGH_I897
+        bool "select SGHI897"
+        depends on GALAXYS
+        help
+	  Select Samsung Captivate
+
+config GALAXYS_SGH_T959
+        bool "select SGHT959"
+        depends on GALAXYS
+        help
+          Select Samsung Vibrant
+
+config GALAXYS_SCH_I500
+        bool "select SCHI500"
+        depends on GALAXYS
+        help
+          Select Samsung Fascinate
+
+config GALAXYS_SPH_D700
+        bool "select SPHD700"
+        depends on GALAXYS
+        help
+          Select Samsung Epic
+endchoice
+endif
+
 config S5PV210_SETUP_FB
 	bool
 	depends on FB_S3C
