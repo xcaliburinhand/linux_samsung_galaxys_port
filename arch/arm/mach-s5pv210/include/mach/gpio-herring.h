@@ -1,10 +1,6 @@
 #ifndef __GPIO_HERRING_H_
 #define __GPIO_HERRING_H_
 
-#ifdef CONFIG_GALAXYS
-#include <mach/gpio-aries.h>
-#else
-
 #define GPIO_LEVEL_LOW			0
 #define GPIO_LEVEL_HIGH			1
 #define GPIO_LEVEL_NONE			2
@@ -334,11 +330,7 @@
 
 #define GPIO_GPH10			S5PV210_GPH1(0)
 
-#ifdef CONFIG_GALAXYS
-#define GPIO_PDA_ACTIVE			S5PV210_MP03(3)
-#else
 #define GPIO_PDA_ACTIVE			S5PV210_GPH1(1)
-#endif
 
 #define GPIO_GPH12			S5PV210_GPH1(2)
 #define GPIO_nINT_ONEDRAM_AP		S5PV210_GPH1(3)
@@ -605,7 +597,6 @@
 #define	GPIO_JACK_INT_N_AF		0xFF
 
 #define _3_GPIO_TOUCH_CE		S5PV210_GPJ3(3)
-#endif
 #endif
 /* end of __GPIO_HERRING_H_ */
 
