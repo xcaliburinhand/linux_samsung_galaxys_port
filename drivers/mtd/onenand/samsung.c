@@ -4,6 +4,7 @@
  *  Copyright © 2008-2010 Samsung Electronics
  *  Kyungmin Park <kyungmin.park@samsung.com>
  *  Marek Szyprowski <m.szyprowski@samsung.com>
+ *  Kolja Dummann <k.dummann@gmail.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -42,42 +43,64 @@ enum soc_type {
 };
 
 struct mtd_partition s3c_partition_info[] = {
-	{
-		.name		= "misc",
-		.offset		= (768*SZ_1K),          /* for bootloader */
-		.size		= (256*SZ_1K),
-		.mask_flags	= MTD_CAP_NANDFLASH,
+
+ /*This is partition layout from the oneNAND it SHOULD match the pitfile on the second page of the NAND.
+   It will work if it doesn't but beware to write below the adress 0x01200000 there are the bootloaders.
+   Currently we won't map them, but we should keep that in mind for later things like flashing bootloader
+   from Linux. There is a partition 'efs' starting @ 0x00080000 40 256K pages long, it contains data for
+   the modem like IMSI we don't touch it for now, but we need the data from it, we create a partition
+   for that and copy the data from it. For this you need a image from it and mount it as vfat or copy
+   it on a kernel with rfs support on the phone.
+
+   This mapping matches the Samsung mapping known as s1_odin_20100512.pit
+
+   Partitions on the lower NAND adresses:
+
+   0x00000000 - 0x0003FFFF = first stage bootloader
+   0x00040000 - 0x0007FFFF = PIT for second stage bootloader
+   0x00080000 - 0x00A7FFFF = EFS: IMSI and NVRAM for the modem
+   0x00A80000 - 0x00BBFFFF = second stage bootloader
+   0x00BC0000 - 0x00CFFFFF = backup of the second stage bootloader (should be loaded if the other fails, unconfirmed!)
+   0x00D00000 - 0x011FFFFF = PARAM.lfs config the bootloader
+
+   #########################################################################################
+   #########################################################################################
+   ###### NEVER TOUCH THE FIRST 2 256k PAGES! THEY CONTAIN THE FIRST STAGE BOOTLOADER ######
+   #########################################################################################
+   #########################################################################################*/
+
+        {
+		.name		= "kernel",
+		.offset		= (72*SZ_256K),
+		.size		= (30*SZ_256K), //101
 	},
 	{
 		.name		= "recovery",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= (5*SZ_1M),
+		.offset		= (102*SZ_256K),
+		.size		= (30*SZ_256K), //131
 	},
 	{
-		.name		= "kernel",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= (5*SZ_1M),
+		.name		= "FACTORYFS",
+		.offset		=  (132*SZ_256K),
+		.size		= (1146*SZ_256K), //1277
 	},
 	{
-		.name		= "ramdisk",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= (3*SZ_1M),
+		.name		= "DBDATAFS",
+		.offset		= (1278*SZ_256K),
+		.size		= (536*SZ_256K), //1813
 	},
 	{
-		.name		= "system",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= (90*SZ_1M),
+		.name		= "CACHE",
+		.offset		= (1814*SZ_256K),
+		.size		= (140*SZ_256K), //1953
 	},
-	{
-		.name		= "cache",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= (80*SZ_1M),
+	{       /* the modem firmware has to be mtd5 as the userspace samsung ril uses
+	           this device hardcoded, but I placed it at the end of the NAND to be
+	           able to change the other partition layout without moving it */
+		.name		= "modem",
+		.offset		= (1954*SZ_256K),
+		.size		= (50*SZ_256K), //1993
 	},
-	{
-		.name		= "userdata",
-		.offset		= MTDPART_OFS_APPEND,
-		.size		= MTDPART_SIZ_FULL,
-	}
 };
 
 #define ONENAND_ERASE_STATUS		0x00
