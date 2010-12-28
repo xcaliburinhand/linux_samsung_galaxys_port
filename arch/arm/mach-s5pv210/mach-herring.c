@@ -1305,12 +1305,19 @@ static void sec_jack_set_micbias_state(bool on)
 		set_shared_mic_bias();
 		spin_unlock_irqrestore(&mic_bias_lock, flags);
 	} else
+#if defined(CONFIG_GALAXYS_SGH_I897)
+		gpio_set_value(GPIO_EARPATH_SEL, on);
+#endif
 		gpio_set_value(GPIO_EAR_MICBIAS_EN, on);
 }
 
 static struct wm8994_platform_data wm8994_pdata = {
 	.ldo = GPIO_CODEC_LDO_EN,
+#if defined(CONFIG_GALAXYS_SGH_I897)
+	.ear_sel = GPIO_EARPATH_SEL,
+#else
 	.ear_sel = GPIO_EAR_SEL,
+#endif
 	.set_mic_bias = wm8994_set_mic_bias,
 };
 
@@ -2370,7 +2377,11 @@ struct sec_jack_platform_data sec_jack_pdata = {
 	.zones = sec_jack_zones,
 	.num_zones = ARRAY_SIZE(sec_jack_zones),
 	.det_gpio = GPIO_DET_35,
+#if defined(CONFIG_GALAXYS_SGH_I897)
+	.send_end_gpio = GPIO_KBC2,
+#else
 	.send_end_gpio = GPIO_EAR_SEND_END,
+#endif
 };
 
 static struct platform_device sec_device_jack = {
@@ -4394,8 +4405,12 @@ static void __init herring_machine_init(void)
 #endif
 
 	/* headset/earjack detection */
+#if defined(CONFIG_GALAXYS_SGH_I897)
+		gpio_request(GPIO_EAR_MICBIAS_EN, "ear_micbias_enable");
+#else
 	if (system_rev >= 0x09)
 		gpio_request(GPIO_EAR_MICBIAS_EN, "ear_micbias_enable");
+#endif
 
 	gpio_request(GPIO_TOUCH_EN, "touch en");
 

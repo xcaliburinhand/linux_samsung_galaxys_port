@@ -101,11 +101,15 @@ static void sec_jack_set_type(struct sec_jack_info *hi, int jack_type)
 		/* for a 4 pole headset, enable detection of send/end key */
 		if (hi->send_key_dev == NULL)
 			/* enable to get events again */
+#if !defined(CONFIG_GALAXYS_SGH_I897) //temp disable send end - needs to be fixed
 			hi->send_key_dev = platform_device_register_data(NULL,
 					GPIO_EVENT_DEV_NAME,
 					hi->dev_id,
 					&sec_jack_input_data,
 					sizeof(sec_jack_input_data));
+#else
+printk("enable send/end\n");
+#endif
 	} else {
 		/* for all other jacks, disable send/end key detection */
 		if (hi->send_key_dev != NULL) {
